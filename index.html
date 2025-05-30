@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Clocks</title>
+    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.20.6/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-black min-h-screen flex items-center justify-center">
+    <div id="root"></div>
+    <script type="text/babel">
+        function Clock() {
+            const [time, setTime] = React.useState(new Date());
+
+            React.useEffect(() => {
+                const timer = setInterval(() => {
+                    setTime(new Date());
+                }, 1000);
+                return () => clearInterval(timer);
+            }, []);
+
+            const cities = [
+                { name: 'Los Angeles', timezone: 'America/Los_Angeles' },
+                { name: 'New York', timezone: 'America/New_York' },
+                { name: 'London', timezone: 'Europe/London' },
+                { name: 'Amsterdam', timezone: 'Europe/Amsterdam' },
+                { name: 'Dubai', timezone: 'Asia/Dubai' },
+                { name: 'Hong Kong', timezone: 'Asia/Hong_Kong' },
+                { name: 'Tokyo', timezone: 'Asia/Tokyo' },
+                { name: 'Sydney', timezone: 'Australia/Sydney' },
+            ];
+
+            return (
+                <div className="text-center">
+                    {cities.map((city, index) => (
+                        <div key={city.name} className="mb-4">
+                            <h2 className="text-white text-xl font-mono">{city.name}</h2>
+                            <p className={`text-4xl font-mono ${index % 2 === 0 ? 'text-red-500' : 'text-green-500'}`}>
+                                {time.toLocaleTimeString('en-US', { timeZone: city.timezone, hour12: false })}
+                            </p>
+                        </div>
+                    ))}
+                </div>
+            );
+        }
+
+        ReactDOM.render(<Clock />, document.getElementById('root'));
+    </script>
+</body>
+</html>
